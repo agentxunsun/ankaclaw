@@ -1,44 +1,70 @@
 # Query Skill — Knowledge Retrieval and Answering
 
 ## When to Use
-When 挚友 asks a question that should be answered from the wiki's knowledge.
+When 挚友 asks a question about topics covered in the wiki, or when exploring ideas related to existing knowledge.
 
 ## Flow
 
 ### 1. Understand the Question
-- Identify what 挚友 is really asking
-- Determine scope: specific entity? concept comparison? synthesis of multiple sources?
+- Parse what 挚友 is really asking
+- Identify key terms, entities, and concepts
 
 ### 2. Search the Wiki
-1. Read `ankawiki/index.md` to find relevant pages
-2. Read the relevant pages fully
-3. Follow cross-references (`[[]]` links) to related pages
-4. If needed, read source pages in `wiki/sources/` for detailed context
+- Read `ankawiki/index.md` to find relevant pages
+- Read each relevant page's content
+- Follow cross-references (`[[]]` links) to connected information
+- Check `wiki/sources/` for primary source details if needed
 
-### 3. Synthesize Answer
-- Combine information from multiple pages
-- Always cite which wiki page(s) the info comes from
-- If information is incomplete, say so explicitly
-- Format based on question type:
-  - Simple fact → direct answer with citation
-  - Comparison → table format
-  - Analysis → structured prose with headings
-  - List → bullet points
+### 3. Synthesize an Answer
+- Combine information from multiple wiki pages
+- Always cite sources: note which wiki page(s) the info comes from
+- Distinguish between "the wiki says X" and "based on general knowledge, X"
+- Present comparisons as tables when appropriate
 
-### 4. Archive Valuable Answers
-If the answer is substantive (not a simple lookup):
-- Create a new wiki page in the appropriate directory
-- Add it to `index.md`
-- Append to `log.md`
-- This is how explorations compound in the knowledge base
+### 4. Assess for Archival (v1.0 new)
 
-### 5. Report
-- Deliver the answer clearly
-- Note any gaps in the wiki that this question revealed
-- Suggest new sources or topics to investigate if relevant
+After generating the answer, evaluate whether it should be archived as a wiki page:
+
+| Answer Type | Archive? | Target Directory |
+|---|---|---|
+| Multi-source synthesis | Yes | `wiki/synthesis/` |
+| Comparison of entities/concepts | Yes | `wiki/comparisons/` |
+| Simple factual lookup | No | Keep in chat |
+| Yes/no question | No | Keep in chat |
+| Correction of wiki error | No, but update the page directly | Update existing page |
+
+### 5. Suggest Archival
+
+If the answer meets archival criteria, append to the response:
+
+> 💡 这个回答综合了多篇 wiki 内容，是否归档为 Wiki 页面？建议标题：《xxx》
+
+Wait for 挚友's confirmation before creating the page.
+
+### 6. Execute Archival (after confirmation)
+
+1. Create page in appropriate directory with frontmatter:
+   ```markdown
+   ---
+   tags: [synthesis]
+   created: YYYY-MM-DD
+   updated: YYYY-MM-DD
+   sources: [list referenced wiki page paths]
+   triggered_by: query
+   ---
+   ```
+2. Update `index.md`
+3. Append to `log.md`
+4. Report result
+
+### 7. Report
+- Deliver the answer
+- Note gaps in wiki revealed by this question
+- Suggest new sources or topics to investigate
 
 ## Important Rules
-- NEVER fabricate information. If the wiki doesn't contain it, say so.
-- If the answer requires info NOT in the wiki, clearly mark it as external knowledge
-- Always distinguish between "the wiki says X" and "based on my training data, X"
-- If 挚友 asks something outside wiki scope, acknowledge and suggest ingesting relevant sources first
+- NEVER fabricate information. If the wiki doesn't have it, say so.
+- Always cite wiki sources
+- Proactively suggest archival for valuable synthesis answers
+- Be honest about gaps — say when wiki is incomplete
+- If 挚友 asks outside wiki scope, suggest ingesting relevant sources first

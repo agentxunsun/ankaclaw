@@ -1,7 +1,7 @@
 # Ingest Skill — Source Material Processing
 
 ## When to Use
-When 挚友 sends a new piece of source material (document link, URL, file, or text) and asks to ingest/process/add it to the wiki.
+When 挚友 sends a new piece of source material (URL, file, or text) and asks to ingest/process/add it to the wiki.
 
 ## Flow
 
@@ -10,11 +10,9 @@ Identify the source type and fetch content:
 
 | Source Type | How to Fetch |
 |---|---|
-| Feishu doc URL | Use `feishu_fetch_doc` tool |
 | Web URL | Use `web_fetch` tool |
 | PDF file | Use `pdf` tool to analyze |
 | Image file | Use `image` tool to analyze |
-| Feishu message attachment | Download via `feishu_im_bot_image` then process |
 
 Save raw content to `ankawiki/raw/`:
 - Text → save as `raw/{slugified-title}.md`
@@ -26,32 +24,49 @@ Save raw content to `ankawiki/raw/`:
 - Identify: key entities (people, orgs, products), key concepts, main arguments, data points
 - Note any contradictions with existing wiki content
 
-### 3. Create Source Summary Page
+### 3. Discuss with 挚友 (Interactive Mode — Default Behavior)
+
+**This is the default mode in v1.0. Do NOT skip this step.**
+
+Before writing any Wiki pages, present the analysis to 挚友 for discussion:
+
+1. **Present extracted entities**: list people, organizations, products found
+2. **Present extracted concepts**: list technologies, theories, methods found
+3. **Present key arguments**: core viewpoints and data points from the source
+4. **Ask for direction**:
+   - "Which of these entities and concepts are you most interested in?"
+   - "Did I miss anything important?"
+   - "Which direction should I focus on?"
+5. **Adjust based on feedback**:
+   - Increase depth for topics 挚友 cares about
+   - Skip topics 挚友 finds unimportant
+   - Create synthesis pages for areas of special interest
+
+> **Design principle**: Karpathy emphasizes "one at a time and stay involved". Ingest is not a black box. The user participates in discussion and guides focus before any wiki writes happen.
+
+### 4. Create Source Summary Page
 Create `ankawiki/wiki/sources/{slug}.md`:
-- Frontmatter with tags, dates, source URL/path
-- Summary section (1-2 paragraphs)
+- Frontmatter: tags, created date, updated date, source URL
+- Summary (1-2 paragraphs)
 - Key Takeaways (bullet points)
 - Notable Quotes (if any)
-- Links to entities and concepts mentioned
+- Links to entities and concepts
 
-### 4. Update Entity Pages
-For each entity mentioned:
-- If entity page exists (`wiki/entities/{slug}.md`): append new information, update summary if needed
-- If entity page doesn't exist: create it with info from this source + mark as stub if incomplete
-- Add `[[sources/{source-slug}|Source Title]]` to the entity's sources list
+### 5. Update Entity Pages
+For each entity (prioritized by step 3 discussion):
+- Existing page → append new info, update summary
+- New page → create with frontmatter, mark as stub if incomplete
 
-### 5. Update Concept Pages
-Same pattern as entities, but for concepts/ideas/technologies.
+### 6. Update Concept Pages
+Same pattern as entities.
 
-### 6. Create Comparison/Synthesis Pages (if applicable)
-If the source compares things or provides a synthesis that spans multiple topics:
-- Create `wiki/comparisons/{slug}.md` or `wiki/synthesis/{slug}.md`
+### 7. Create Comparison/Synthesis Pages (if applicable)
+- `wiki/comparisons/{slug}.md` or `wiki/synthesis/{slug}.md`
 
-### 7. Update index.md
-Add all new pages to the appropriate category in `ankawiki/index.md`.
+### 8. Update index.md
+Add all new pages to the appropriate category.
 
-### 8. Update log.md
-Append an entry:
+### 9. Update log.md
 ```markdown
 ## [YYYY-MM-DD] ingest | Source Title
 - Source: [URL or file path]
@@ -60,19 +75,18 @@ Append an entry:
 - Pages affected: [count]
 ```
 
-### 9. Report to 挚友
-Summarize what was ingested and what pages were created/updated. Mention any interesting findings or contradictions with existing wiki content.
+### 10. Report
+Summarize to 挚友: pages created/updated, interesting findings, contradictions found.
 
 ## Naming Convention
-- File names: lowercase, hyphenated, descriptive (e.g., `karpathy-llm-wiki.md`)
-- Slugs derived from title: remove articles, use key words
+- lowercase, hyphenated (e.g., `karpathy-llm-wiki.md`)
 
 ## Quality Checklist
 - [ ] Raw source saved to `raw/`
-- [ ] Source summary page created with frontmatter
-- [ ] All mentioned entities have pages (created or updated)
-- [ ] All mentioned concepts have pages (created or updated)
-- [ ] Cross-references (`[[]]` links) are valid
+- [ ] Source summary page with frontmatter
+- [ ] All entities have pages
+- [ ] All concepts have pages
+- [ ] Cross-references added
 - [ ] index.md updated
-- [ ] log.md appended
-- [ ] No orphan pages created (everything linked from somewhere)
+- [ ] log.md updated
+- [ ] No orphan pages

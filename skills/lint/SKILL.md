@@ -9,70 +9,86 @@ When 挚友 asks to lint/check/audit the wiki, or during periodic maintenance.
 - Read all pages in each category
 - Look for factual contradictions between pages
 - Flag: "Page A says X, but Page B says Y about the same topic"
-- Auto-fix obvious cases (e.g., outdated info superseded by newer source)
-- Report ambiguous cases for 挚友 to decide
+- Auto-fix obvious cases
 
-### 2. Stale Content
-- Check if any pages reference sources that have been superseded
-- Check if `updated` dates are very old relative to newer content in the same domain
-- Flag pages that might need refreshing
+### 2. Orphan Pages
+- Pages that exist but have NO inbound links from other wiki pages
+- These are unreachable via cross-referencing
 
-### 3. Orphan Pages
-- Find pages with NO inbound links (no other page links to them)
-- These should either be linked from relevant pages or considered for removal
-- Use `index.md` as the master reference — if it's in index but nothing links to it, it's an orphan
+### 3. Missing Pages
+- `[[]]` links that point to non-existent files
+- Referenced entities/concepts without dedicated pages
 
-### 4. Missing Pages
-- Find all `[[]]` links across the wiki
-- Check if each target page actually exists
-- Create stub pages for missing targets, or remove broken links
+### 4. Missing Cross-References
+- Pages covering related topics but not linking to each other
 
-### 5. Missing Cross-References
-- Find pages that cover related topics but don't link to each other
-- Suggest and add cross-references
+### 5. Frontmatter Consistency
+- All pages have: tags, created, updated, sources
+- Dates in YYYY-MM-DD format
+- Tags match page category (entity, concept, source, etc.)
 
-### 6. Data Gaps
-- Identify topics that are frequently mentioned but lack dedicated pages
-- Identify concepts that are referenced but never fully explained
-- Suggest what to ingest next
+### 6. Knowledge Gap Detection (v1.0 new)
+Identify areas where the wiki is incomplete:
 
-### 7. Frontmatter Consistency
-- Verify all pages have valid YAML frontmatter
-- Check that `sources` lists are accurate
-- Check that `updated` dates reflect actual last edit
+- **Shallow pages**: stub pages with minimal content that deserve expansion
+- **Missing connections**: topics that overlap but have no cross-reference, suggesting an unexplored relationship
+- **Unexplored themes**: subjects frequently mentioned across multiple pages but lacking a dedicated page
+- **Concept blank zones**: areas between existing concepts that should have connecting pages
 
-## Output
+For each gap, generate **concrete search suggestions**:
+- 2-3 search keywords per gap
+- Suggested source types to look for
+- Why filling this gap would be valuable
 
-Generate a lint report:
+## Output Format
 
 ```markdown
-# Wiki Lint Report — [YYYY-MM-DD]
+# Lint Report — [YYYY-MM-DD]
 
 ## Summary
-- Total pages: [count]
-- Issues found: [count]
-- Auto-fixed: [count]
-- Needs review: [count]
+- Pages scanned: [N]
+- Issues found: [N]
+- Auto-fixed: [N]
+- Needs review: [N]
 
-## Issues
+## Auto-Fixed Issues
+- [Description of what was fixed]
 
-### [Category: e.g., Contradiction]
-- **Page A** vs **Page B**: [description] → [status: auto-fixed / needs review]
+## Issues Needing Review
+
+### Contradictions
+- **Page A** vs **Page B**: [description]
 
 ### Orphan Pages
 - [[path/to/page|Title]] — no inbound links
 
 ### Missing Pages
-- [[path/to/missing|Referenced Title]] — referenced by [N] pages but doesn't exist
+- [[path/to/missing|Title]] — referenced by [N] pages but doesn't exist
 
 ### Missing Cross-References
 - [[page-a]] and [[page-b]] cover related topics but don't link to each other
 
-## Suggestions
-- [Topics/sources worth ingesting next]
+## Knowledge Gaps
+
+### Shallow Pages
+- [[path/to/page|Title]] — stub, only [N] lines
+  - 💡 Suggested search: [keywords]
+
+### Missing Connections
+- [[page-a]] ↔ [[page-b]] — related but unlinked
+  - 💡 Gap: [what's missing]
+  - 💡 Suggested search: [keywords]
+
+### Unexplored Themes
+- [Theme] mentioned [N] times but no dedicated page
+  - 💡 Suggested search: [keywords]
+
+## Recommended Next Steps
+- [Sources/topics worth ingesting based on gap analysis]
 ```
 
 ## After Lint
 - Append to `ankawiki/log.md`
 - Apply auto-fixes
-- Report to 挚友 with summary and items needing review
+- Report to 挚友
+- **Highlight knowledge gaps prominently** — these can trigger the next ingest cycle
