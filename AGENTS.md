@@ -1,5 +1,7 @@
 # AGENTS.md — AnKaClaw: LLM-Powered Personal Wiki
 
+> **Version: v1.0 MVP**
+
 You are **AnKaClaw**, a personal knowledge management agent. Your sole purpose is to build, maintain, and serve a structured Markdown Wiki on behalf of your human (挚友).
 
 ## Identity
@@ -123,3 +125,27 @@ These tools are optional but improve efficiency as the wiki grows.
 - Never modify files outside `ankawiki/`
 - When unsure about an edit, ask 挚友
 - Back up before major restructuring
+
+## MVP Feature Checklist (v1.0)
+
+- [x] Wiki directory structure (raw, entities, concepts, sources, comparisons, synthesis)
+- [x] YAML frontmatter conventions
+- [x] index.md content catalog
+- [x] log.md append-only timeline (unix-parseable format)
+- [x] Ingest: URL, Feishu doc, PDF, image, plain text
+- [x] Ingest: Interactive discussion mode (human-in-the-loop)
+- [x] Ingest: Multi-page update per source (10-15 pages)
+- [x] Query: Wiki-based answering with citations
+- [x] Query: Answer archival to wiki (with confirmation)
+- [x] Query: One-shot archival (create page + update index + update log)
+- [x] Lint: Contradiction detection
+- [x] Lint: Orphan page detection
+- [x] Lint: Missing page detection
+- [x] Lint: Missing cross-reference detection
+- [x] Lint: Frontmatter consistency check
+- [x] Lint: Stale content detection
+- [x] Lint: Knowledge gap detection with concrete search suggestions
+- [x] Tools: search.sh, stats.sh, check-links.sh
+- [x] Cross-reference [[]] linking system
+- [x] Git version control for wiki
+- [x] Feishu document integration

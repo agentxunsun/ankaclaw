@@ -14,6 +14,7 @@ When 挚友 asks a question about topics covered in the wiki, or when exploring 
 - Read each relevant page's content
 - Follow cross-references (`[[]]` links) to connected information
 - Check `wiki/sources/` for primary source details if needed
+- Use `tools/search.sh` for keyword search when index isn't sufficient
 
 ### 3. Synthesize an Answer
 - Combine information from multiple wiki pages
@@ -21,17 +22,18 @@ When 挚友 asks a question about topics covered in the wiki, or when exploring 
 - Distinguish between "the wiki says X" and "based on general knowledge, X"
 - Present comparisons as tables when appropriate
 
-### 4. Assess for Archival (v1.0 new)
+### 4. Assess for Archival
 
-After generating the answer, evaluate whether it should be archived as a wiki page:
+After generating the answer, evaluate whether it should be archived:
 
 | Answer Type | Archive? | Target Directory |
 |---|---|---|
-| Multi-source synthesis | Yes | `wiki/synthesis/` |
-| Comparison of entities/concepts | Yes | `wiki/comparisons/` |
-| Simple factual lookup | No | Keep in chat |
-| Yes/no question | No | Keep in chat |
-| Correction of wiki error | No, but update the page directly | Update existing page |
+| Multi-source synthesis | ✅ Yes | `wiki/synthesis/` |
+| Comparison of entities/concepts | ✅ Yes | `wiki/comparisons/` |
+| New analysis or insight combining wiki pages | ✅ Yes | `wiki/synthesis/` |
+| Simple factual lookup (1 source) | ❌ No | Keep in chat |
+| Yes/no question | ❌ No | Keep in chat |
+| Correction of wiki error | ❌ No, but update the page directly | Update existing page |
 
 ### 5. Suggest Archival
 
@@ -43,19 +45,42 @@ Wait for 挚友's confirmation before creating the page.
 
 ### 6. Execute Archival (after confirmation)
 
+**One-shot archival** — create page AND update all indexes in one step:
+
 1. Create page in appropriate directory with frontmatter:
    ```markdown
    ---
-   tags: [synthesis]
+   tags: [synthesis|comparison]
    created: YYYY-MM-DD
    updated: YYYY-MM-DD
    sources: [list referenced wiki page paths]
    triggered_by: query
    ---
+
+   # [Page Title]
+
+   ## Summary
+   [One paragraph]
+
+   ## Details
+   [Full answer content]
+
+   ## Related
+   - [[path/to/related-page|Display Name]]
    ```
-2. Update `index.md`
-3. Append to `log.md`
-4. Report result
+
+2. Update `ankawiki/index.md` — add entry to appropriate category section
+
+3. Append to `ankawiki/log.md`:
+   ```markdown
+   ## [YYYY-MM-DD] query → archive | [Title]
+   - 触发：挚友查询
+   - 归档到：[directory/filename.md]
+   - 引用来源：[list source pages]
+   - Pages affected: 1 created + index/log updated
+   ```
+
+4. Report: "已归档为 [[path|Title]]"
 
 ### 7. Report
 - Deliver the answer
@@ -64,7 +89,8 @@ Wait for 挚友's confirmation before creating the page.
 
 ## Important Rules
 - NEVER fabricate information. If the wiki doesn't have it, say so.
-- Always cite wiki sources
+- Always cite wiki sources with `[[]]` links
 - Proactively suggest archival for valuable synthesis answers
 - Be honest about gaps — say when wiki is incomplete
 - If 挚友 asks outside wiki scope, suggest ingesting relevant sources first
+- When archiving, always complete ALL 3 steps (create page + update index + update log) — never leave partial archives
