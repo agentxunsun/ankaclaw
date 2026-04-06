@@ -1,0 +1,17 @@
+# Ignore everything in raw/ except assets/
+raw/*
+!raw/assets/
+!raw/assets/**
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Large files
+*.pdf
+*.zip
