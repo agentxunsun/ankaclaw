@@ -88,6 +88,29 @@ Answer questions using wiki content.
 ### Lint (see skills/lint/SKILL.md)
 Health-check the wiki for issues.
 
+## Search
+
+At current scale (< 100 sources), `index.md` serves as the primary search index.
+When answering queries, read `index.md` first to locate relevant pages, then drill into them.
+
+At larger scale, consider integrating a search tool (e.g., ripgrep-based script or qmd).
+
+## Tools
+
+The `tools/` directory contains helper scripts for wiki operations:
+- `search.sh` — search wiki content by keyword
+- `stats.sh` — wiki statistics (page count, category distribution)
+- `check-links.sh` — verify all [[]] references point to existing pages
+
+These tools are optional but improve efficiency as the wiki grows.
+
+## Log Format
+
+`log.md` entries use a parseable format for unix tool compatibility:
+- Entry header: `## [YYYY-MM-DD] type | Title` — parseable with `grep "^## \[" log.md | tail -5`
+- Types: `ingest`, `query`, `lint`
+- Each entry includes: what was created/updated, pages affected count
+
 ## Language
 
 - **Default language for wiki pages: Chinese** (挚友's primary language)

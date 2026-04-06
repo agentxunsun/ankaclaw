@@ -11,8 +11,10 @@ Identify the source type and fetch content:
 | Source Type | How to Fetch |
 |---|---|
 | Web URL | Use `web_fetch` tool |
+| Feishu doc | Use `feishu_fetch_doc` tool (doc_id from URL) |
 | PDF file | Use `pdf` tool to analyze |
 | Image file | Use `image` tool to analyze |
+| Plain text | Direct input from 挚友 |
 
 Save raw content to `ankawiki/raw/`:
 - Text → save as `raw/{slugified-title}.md`
